@@ -1,0 +1,16 @@
+RewriteEngine On
+
+# Redirecionar .html para sem .html
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/([^/]+)\.html [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# Remover a extensão .php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+DirectoryIndex index.php
+
+# Redireciona www para sem www
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
