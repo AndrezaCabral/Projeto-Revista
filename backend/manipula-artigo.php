@@ -10,16 +10,20 @@ switch ($action) {
     case 'create':
         $titulo   = $_POST['titulo'] ?? '';
         $conteudo = $_POST['conteudo'] ?? '';
-        $autor    = $_POST['autor'] ?? '';
+        session_start();
+        $autor = $_SESSION['nome'] ?? 'Anônimo';
+
 
         $sql = "INSERT INTO artigos (titulo, conteudo, autor) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sss", $titulo, $conteudo, $autor);
 
-        if ($stmt->execute()) {
-            echo "Artigo criado com sucesso!";
+         if ($stmt->execute()) {
+        header("Location: ../publicar.php?sucesso=1");
+        exit;
         } else {
-            echo "Erro ao criar artigo: " . $conn->error;
+            header("Location: ../publicar.php?erro=1");
+            exit;
         }
         break;
 

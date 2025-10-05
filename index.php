@@ -2,16 +2,7 @@
   include("header.php");
 ?>
 
-  <body onLoad="loading()">
-
-    <div class="box-load">
-        <div class="logo-carregamento text-center">
-            <img  src="./assets/images/logo/logo.png" class="icone" alt="imagem de carregamento da página"  style="width:70px;">
-        </div>
-        <div class="pre-load"></div>
-    </div> 
-
-    <div class="content">
+  <body>
 
       <header>
         <!--MENU LATERAL DESKTOP-->
@@ -41,8 +32,6 @@
             </div>
           </div>
         </section>
-
-    
       </main>
 
       <?php

@@ -4,59 +4,43 @@ if (!isset($_SESSION["id"]) || $_SESSION["tipo"] != "leitor") {
     header("Location: index.php");
     exit;
 }
+
+include("./backend/conexao-banco.php");
+$sql = "SELECT * FROM artigos ORDER BY id DESC";
+$result = $conn->query($sql);
+include("header.php");
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Artigos - Revista Rosa de Ferro</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="menu-artigos navbar navbar-expand-lg navbar-dark">
         <div class="container">
+            <img src="./assets/images/logo/logo.png" width="50" class="mx-3" alt="">
             <a class="navbar-brand" href="#">Rosa de Ferro</a>
-            <span class="navbar-text ms-auto">
-                Olá, <?php echo htmlspecialchars($_SESSION["nome"]); ?>
+            <span class="ms-auto">
+                Bem vindo <?php echo htmlspecialchars($_SESSION["nome"]); ?> !
             </span>
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h1 class="mb-4">Artigos</h1>
-        <p>Esta é a página de artigos para leitores logados. Em breve, os artigos serão carregados dinamicamente do banco de dados.</p>
+    <!-- SEÇÃO ARTIGOS PUBLICADOS -->
+    <section class="artigos-publicados">
+        <div class="container">
+            <h1>Artigos Publicados</h1>
 
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Artigo Exemplo 1</h5>
-                        <p class="card-text">Resumo do artigo 1...</p>
-                        <a href="#" class="btn btn-primary">Ler mais</a>
-                    </div>
+            <div class="artigos-grid col-md-12 mb-5">
+            <?php while($artigo = $result->fetch_assoc()): ?>
+                <div class="artigo-card">
+                <h5><?= htmlspecialchars($artigo['titulo']); ?></h5>
+                <p><?= nl2br(htmlspecialchars(substr($artigo['conteudo'], 0, 250))); ?>...</p>
+                <small>Por <?= htmlspecialchars($artigo['autor']); ?></small>
                 </div>
+            <?php endwhile; ?>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Artigo Exemplo 2</h5>
-                        <p class="card-text">Resumo do artigo 2...</p>
-                        <a href="#" class="btn btn-primary">Ler mais</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Artigo Exemplo 3</h5>
-                        <p class="card-text">Resumo do artigo 3...</p>
-                        <a href="#" class="btn btn-primary">Ler mais</a>
-                    </div>
-                </div>
+
+            <div class="text-center">
+                <a href="index.php" class="btn btn-lg btn-secondary">Voltar para a página inicial</a>
             </div>
         </div>
-    </div>
-
+    </section>
 </body>
-</html>
+
