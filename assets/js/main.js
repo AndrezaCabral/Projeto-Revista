@@ -68,3 +68,35 @@ document.getElementById('btnNaoLeitor').addEventListener('click', function(){
         loginModalEscritor.show();
     }
   });
+
+  
+// Função chamada ao clicar em "Excluir"
+
+function confirmarExclusao(id) {
+    if (confirm("Tem certeza que deseja excluir este artigo?")) {
+        fetch('./backend/manipula-artigo.php?action=delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'id=' + encodeURIComponent(id)
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Mostra aviso de sucesso
+            alert('Artigo excluído com sucesso!');
+            
+            // Remove o artigo da tela
+            const card = document.querySelector(`#artigo-${id}`);
+            if (card) card.remove();
+
+            // Recarrega a página para atualizar a lista
+            setTimeout(() => location.reload(), 1000);
+        })
+        .catch(err => {
+            alert('Erro ao excluir o artigo.');
+            console.error(err);
+        });
+    }
+}
+
+
+

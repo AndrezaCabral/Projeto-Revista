@@ -59,28 +59,62 @@ include("header.php");
     <!-- SEÇÃO ARTIGOS PUBLICADOS -->
     <section class="meus-artigos-publicados py-5">
         <div class="container">
-            <!-- Lista de artigos publicados (placeholder por enquanto) -->
             <h3 class="fw-bold pb-5">Meus artigos publicados</h3>
+
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <div class="card-meus-artigos p-5 py-4">
-                        <div class="card-body">
-                            <h5 class="card-title pb-3 fw-bold">Título exemplo</h5>
-                            <p class="card-text">Prévia do conteúdo...</p>
-                        </div>
-                        <div class="card-footer pt-3 text-end">
-                            <a href="#" class="btn btn-md btn-success px-3 mx-2">Editar</a>
-                            <a href="#" class="btn btn-md btn-danger">Excluir</a>
+                <?php
+                include("./backend/conexao-banco.php");
+                $autor = $_SESSION["nome"];
+
+                // Busca artigos do autor logado
+                $sql = "SELECT * FROM artigos WHERE autor = ? ORDER BY id DESC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("s", $autor);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0):
+                    while ($artigo = $result->fetch_assoc()):
+                ?>
+                    <div class="col-md-6 mb-3" id="artigo-<?php echo $artigo['id']; ?>">
+                        <div class="card-meus-artigos p-5 py-4">
+                            <div class="card-body">
+                                <h5 class="card-title pb-3 fw-bold">
+                                    <?= htmlspecialchars($artigo['titulo']); ?>
+                                </h5>
+                                <p class="card-text">
+                                    <?= htmlspecialchars(substr($artigo['conteudo'], 0, 120)); ?>...
+                                </p>
+                                <small class="text-muted">
+                                    Publicado em <?= date("d/m/Y H:i", strtotime($artigo['data_publicacao'])); ?>
+                                </small>
+                            </div>
+                            <div class="card-footer pt-3 text-end">
+                                <button 
+                                    type="button"
+                                    class="btn btn-md btn-danger" 
+                                    onclick="confirmarExclusao(<?= $artigo['id']; ?>)">
+                                    Excluir
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php
+                    endwhile;
+                else:
+                    echo "<p class='text-muted'>Você ainda não publicou nenhum artigo.</p>";
+                endif;
+
+                $conn->close();
+                ?>
+            </div>
+
+            <div class="text-end my-5 mx-5">
+                <a href="index.php" class="btn btn-lg btn-secondary">Voltar para a página inicial</a>
             </div>
         </div>
-        <div class="text-end my-5 mx-5">
-            <a href="index.php" class="btn btn-lg btn-secondary">Voltar para a página inicial</a>
-        </div>
     </section>
- 
+
     <?php
         include("footer.php");
     ?>
