@@ -68,20 +68,18 @@ hr{
   transition: .3s ease-out;
 }
 
-.btn-whatsapp{
-  background-color: var(--cor-verde-whats);
+.btn-favoritos{
+  background-color: var(--cor-terciaria);
   color: var(--cor-branco);
-  border-radius: 30px;
-  border: solid 1px var(--cor-verde-whats);
+  border-radius: 8px;
+  border: none;
   font-weight: bold;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
 }
 
-.btn-whatsapp:hover{
+.btn-favoritos:hover{
   background-color: var(--cor-branco);
-  color: var(--cor-verde-whats);
-  border: solid 1px var(--cor-verde-whats);
+  color: var(--cor-terciaria);
+  border: none;
   transition: 0.3s ease-in-out;
 }
 
@@ -304,6 +302,34 @@ main, footer{
   color: #777;
   font-style: italic;
   text-align: right;
+}
+
+/*FAVORITOS*/
+.favoritos i{
+  color: #FFD700;
+}
+
+.favorito-btn {
+    border: 1px solid #FFD700;
+    color: var(--cor-terciaria);
+    border-radius: 20px;
+    transition: 0.3s;
+    background: transparent;
+    font-weight: bold;
+}
+
+.favorito-btn:hover {
+    background: transparent;
+    color: var(--cor-cinza);
+    border: 1px solid #FFD700;
+
+}
+
+/* Quando já estiver favoritado */
+.favorito-ativo {
+    background: #FFD700;
+    color: var(--cor-cinza);
+    font-weight: bold;
 }
 
 

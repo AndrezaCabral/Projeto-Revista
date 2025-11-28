@@ -16,9 +16,14 @@ include("header.php");
         <div class="container">
             <img src="./assets/images/logo/logo.png" width="50" class="mx-3" alt="">
             <a class="navbar-brand" href="#">Rosa de Ferro</a>
-            <span class="ms-auto">
+            <span class="ms-auto mx-5">
                 Bem vindo <?php echo htmlspecialchars($_SESSION["nome"]); ?> !
             </span>
+            <div class="favoritos ms-5">
+                <a href="favoritos.php" class="btn btn-favoritos">
+                    <i class="fa-solid fa-star"></i> Favoritos
+                </a>
+            </div>
         </div>
     </nav>
 
@@ -29,10 +34,29 @@ include("header.php");
 
             <div class="artigos-grid col-md-12 mb-5">
             <?php while($artigo = $result->fetch_assoc()): ?>
+                <?php
+                $id_art = $artigo['id'];
+                $id_user = $_SESSION['id'];
+
+                $sqlFav = "SELECT * FROM favoritos WHERE id_usuario = $id_user AND id_artigo = $id_art";
+                $isFavorito = $conn->query($sqlFav)->num_rows > 0;
+                ?>
+
                 <div class="artigo-card">
                 <h5><?= htmlspecialchars($artigo['titulo']); ?></h5>
                 <p><?= nl2br(htmlspecialchars(substr($artigo['conteudo'], 0, 250))); ?>...</p>
                 <small>Por <?= htmlspecialchars($artigo['autor']); ?></small>
+                <form action="./backend/favoritar.php" method="POST">
+                    <input type="hidden" name="id_artigo" value="<?= $artigo['id']; ?>">
+
+                    <button type="submit"
+                        class="btn btn-sm favorito-btn <?= $isFavorito ? 'favorito-ativo' : '' ?>">
+                        <i class="fa-solid fa-star"></i>
+                        <?= $isFavorito ? 'Salvo' : 'Favoritar' ?>
+                    </button>
+                </form>
+
+
                 </div>
             <?php endwhile; ?>
             </div>
